@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>나도 가수다 — 투자 기획서 v1.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:#06040f; --dark:#0d0b1a; --card:#131220; --card2:#1a1830;
+  --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.14);
+  --gold:#E8C97A; --gold-dim:rgba(232,201,122,0.12);
+  --green:#7AE8A8;
+  --text:#F0EEF8; --text2:#9B98B8; --text3:#5A5878;
+  --r:16px;
+  --nav-h:64px;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; overflow-x:hidden; }
+body { font-family:'DM Sans',sans-serif; background:var(--black); color:var(--text); line-height:1.7; overflow-x:hidden; width:100%; }
+h1,h2,h3 { font-family:'Noto Serif KR',serif; letter-spacing:-0.03em; line-height:1.2; }
+img, video { max-width:100%; }
+
+/* NAV */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:999;
+  background:rgba(6,4,15,0.97); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  height:var(--nav-h);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 24px;
+}
+.nav-logo {
+  font-family:'Noto Serif KR',serif; font-size:18px; font-weight:900;
+  color:var(--gold); flex-shrink:0; cursor:pointer;
+}
+.nav-links { display:flex; gap:20px; flex-wrap:wrap; }
+.nav-links span { font-size:12px; color:var(--text2); cursor:pointer; transition:color 0.2s; white-space:nowrap; }
+.nav-links span:hover { color:var(--gold); }
+.nav-hamburger {
+  display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px;
+}
+.nav-hamburger span { display:block; width:22px; height:2px; background:var(--text2); border-radius:2px; transition:all 0.3s; }
+.nav-mobile {
+  display:none; position:fixed; top:var(--nav-h); left:0; right:0; z-index:998;
+  background:rgba(6,4,15,0.98); border-bottom:1px solid var(--border);
+  padding:16px 24px; flex-direction:column; gap:0;
+}
+.nav-mobile.open { display:flex; }
+.nav-mobile span {
+  font-size:15px; color:var(--text2); cursor:pointer;
+  padding:14px 0; border-bottom:1px solid var(--border);
+  transition:color 0.2s;
+}
+.nav-mobile span:last-child { border-bottom:none; }
+.nav-mobile span:hover { color:var(--gold); }
+@media(max-width:600px) {
+  .nav-links { display:none; }
+  .nav-hamburger { display:flex; }
+}
+
+/* LAYOUT */
+.container { max-width:900px; margin:0 auto; padding:0 24px; width:100%; }
+section { padding:80px 0; border-bottom:1px solid var(--border); scroll-margin-top:var(--nav-h); }
+section:last-of-type { border-bottom:none; }
+
+/* HERO */
+#hero {
+  padding:calc(var(--nav-h) + 80px) 0 80px;
+  text-align:center; position:relative; overflow:hidden;
+}
+.hero-bg {
+  position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(232,201,122,0.08),transparent 70%),
+             radial-gradient(ellipse 50% 40% at 80% 80%,rgba(122,172,232,0.05),transparent 60%);
+}
+.badge {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:6px 16px; border-radius:40px;
+  background:var(--gold-dim); border:1px solid rgba(232,201,122,0.25);
+  font-size:12px; font-weight:700; color:var(--gold);
+  letter-spacing:0.1em; text-transform:uppercase; margin-bottom:24px;
+}
+.hero-title {
+  font-size:clamp(40px,8vw,88px); font-weight:900; margin-bottom:20px;
+  color:var(--gold);
+}
+.hero-sub {
+  font-size:clamp(15px,2.5vw,19px); color:var(--text2);
+  max-width:580px; margin:0 auto 40px; line-height:1.7;
+}
+.stats { display:flex; gap:32px; justify-content:center; flex-wrap:wrap; }
+.stat-num { font-family:'Noto Serif KR',serif; font-size:32px; font-weight:900; color:var(--gold); }
+.stat-label { font-size:12px; color:var(--text3); margin-top:4px; }
+
+/* SECTION HEADER */
+.sec-badge {
+  display:inline-block; padding:4px 14px; border-radius:20px;
+  background:var(--gold-dim); border:1px solid rgba(232,201,122,0.2);
+  font-size:11px; font-weight:700; color:var(--gold);
+  letter-spacing:0.1em; text-transform:uppercase; margin-bottom:14px;
+}
+.sec-title { font-size:clamp(24px,4vw,42px); font-weight:900; margin-bottom:14px; }
+.sec-sub { font-size:15px; color:var(--text2); max-width:540px; line-height:1.7; }
+.divider { width:48px; height:3px; background:linear-gradient(90deg,var(--gold),transparent); border-radius:2px; margin:18px 0 36px; }
+
+/* CARDS */
+.card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:24px; }
+.g2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.g3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+@media(max-width:680px) { .g2, .g3 { grid-template-columns:1fr; } }
+.card-icon { font-size:28px; margin-bottom:12px; }
+.card-title { font-family:'Noto Serif KR',serif; font-size:16px; font-weight:700; margin-bottom:8px; }
+.card-desc { font-size:14px; color:var(--text2); line-height:1.7; }
+
+/* PROBLEM */
+.prob-list { display:flex; flex-direction:column; gap:12px; margin-top:36px; }
+.prob-item { display:flex; gap:16px; align-items:flex-start; padding:22px; background:var(--card); border:1px solid var(--border); border-radius:var(--r); }
+.prob-num { font-family:'Noto Serif KR',serif; font-size:28px; font-weight:900; color:rgba(232,201,122,0.25); flex-shrink:0; line-height:1; }
+.prob-text h4 { font-size:15px; font-weight:700; margin-bottom:6px; }
+.prob-text p { font-size:13px; color:var(--text2); }
+
+/* PIPELINE */
+.pipeline { display:flex; align-items:stretch; flex-wrap:wrap; gap:8px; margin-top:32px; }
+.p-step { flex:1; min-width:120px; text-align:center; padding:18px 12px; background:var(--card); border:1px solid var(--border); border-radius:var(--r); }
+.p-step.hl { background:var(--gold-dim); border-color:rgba(232,201,122,0.35); }
+.p-arrow { font-size:16px; color:var(--gold); display:flex; align-items:center; padding:0 4px; flex-shrink:0; }
+.p-icon { font-size:22px; margin-bottom:8px; }
+.p-title { font-size:12px; font-weight:700; margin-bottom:4px; }
+.p-desc { font-size:11px; color:var(--text3); line-height:1.5; }
+@media(max-width:600px) {
+  .pipeline { flex-direction:column; }
+  .p-arrow { transform:rotate(90deg); justify-content:center; }
+}
+
+/* ECOSYSTEM */
+.eco-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:36px; }
+@media(max-width:600px) { .eco-grid { grid-template-columns:1fr 1fr; } }
+.eco-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; transition:all 0.25s; }
+.eco-card:hover { border-color:rgba(232,201,122,0.3); transform:translateY(-2px); }
+.eco-card.hl { background:var(--gold-dim); border-color:rgba(232,201,122,0.3); }
+.eco-icon { font-size:22px; margin-bottom:8px; }
+.eco-title { font-size:13px; font-weight:700; margin-bottom:4px; }
+.eco-desc { font-size:12px; color:var(--text2); }
+
+/* ROADMAP */
+.roadmap { display:flex; flex-direction:column; margin-top:36px; position:relative; }
+.roadmap::before { content:''; position:absolute; left:7px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,var(--gold),rgba(232,201,122,0.05)); }
+.rm-item { display:flex; gap:24px; padding-bottom:40px; position:relative; }
+.rm-dot { width:16px; height:16px; border-radius:50%; background:var(--gold); flex-shrink:0; margin-top:4px; position:relative; z-index:1; box-shadow:0 0 10px rgba(232,201,122,0.5); }
+.rm-dot.f { background:var(--card2); border:2px solid var(--border2); box-shadow:none; }
+.rm-phase { font-size:11px; font-weight:700; color:var(--gold); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px; }
+.rm-title { font-size:17px; font-weight:700; margin-bottom:10px; }
+.rm-tags { display:flex; flex-wrap:wrap; gap:8px; }
+.tag { padding:4px 12px; border-radius:20px; background:var(--card2); border:1px solid var(--border2); font-size:12px; color:var(--text2); }
+.tag.done { background:rgba(122,232,168,0.07); border-color:rgba(122,232,168,0.2); color:var(--green); }
+
+/* REVENUE */
+.rev-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:36px; }
+@media(max-width:600px) { .rev-grid { grid-template-columns:1fr; } }
+.rev-card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:24px; }
+.rev-card.pri { background:var(--gold-dim); border-color:rgba(232,201,122,0.3); }
+.rev-phase { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+.rev-title { font-size:18px; font-weight:700; margin-bottom:14px; }
+.rev-items { display:flex; flex-direction:column; gap:10px; }
+.rev-item { display:flex; align-items:center; gap:10px; font-size:14px; color:var(--text2); }
+.rev-item::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--gold); flex-shrink:0; }
+.price { font-weight:700; color:var(--text); }
+
+/* MARKET */
+.mkt-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:36px; }
+@media(max-width:600px) { .mkt-grid { grid-template-columns:1fr; } }
+.mkt-card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:24px; text-align:center; }
+.mkt-size { font-family:'Noto Serif KR',serif; font-size:34px; font-weight:900; color:var(--gold); margin-bottom:8px; }
+.mkt-label { font-size:13px; font-weight:700; margin-bottom:6px; }
+.mkt-desc { font-size:12px; color:var(--text3); line-height:1.6; }
+
+/* TECH TABLE */
+.tech-wrap { overflow-x:auto; margin-top:28px; }
+.tech-table { width:100%; border-collapse:collapse; min-width:500px; }
+.tech-table th { text-align:left; padding:12px 14px; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--text3); border-bottom:1px solid var(--border); }
+.tech-table td { padding:13px 14px; font-size:13px; border-bottom:1px solid var(--border); vertical-align:top; }
+.tech-table tr:last-child td { border-bottom:none; }
+.tech-table td:first-child { color:var(--gold); font-weight:600; white-space:nowrap; }
+.tbadge { display:inline-block; padding:3px 10px; border-radius:12px; background:rgba(122,232,168,0.08); border:1px solid rgba(122,232,168,0.2); font-size:11px; color:var(--green); }
+.tbadge.wip { background:var(--gold-dim); border-color:rgba(232,201,122,0.2); color:var(--gold); }
+
+/* VISION QUOTE */
+.vision-quote { font-family:'Noto Serif KR',serif; font-size:clamp(18px,3vw,32px); font-weight:700; line-height:1.45; border-left:3px solid var(--gold); padding-left:24px; margin:44px 0; }
+.vision-quote em { color:var(--gold); font-style:normal; }
+
+/* CTA */
+#cta { text-align:center; }
+.cta-box { display:inline-flex; flex-direction:column; align-items:center; gap:8px; padding:28px 40px; background:var(--gold-dim); border:1px solid rgba(232,201,122,0.3); border-radius:20px; max-width:100%; }
+.demo-btn {
+  display:inline-block; padding:16px 36px;
+  background:linear-gradient(135deg,#C9A84C,#E8C97A);
+  border-radius:12px; font-size:16px; font-weight:700;
+  color:#06040f; text-decoration:none;
+  letter-spacing:0.02em; cursor:pointer;
+  border:none; margin-top:8px;
+  transition:opacity 0.2s, transform 0.2s;
+}
+.demo-btn:hover { opacity:0.85; transform:translateY(-2px); }
+
+/* FOOTER */
+footer { text-align:center; padding:28px; color:var(--text3); font-size:12px; border-top:1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="scrollTo(0,0)">나도 가수다</div>
+  <div class="nav-links">
+    <span onclick="goTo('problem')">문제</span>
+    <span onclick="goTo('solution')">솔루션</span>
+    <span onclick="goTo('ecosystem')">생태계</span>
+    <span onclick="goTo('roadmap')">로드맵</span>
+    <span onclick="goTo('revenue')">수익모델</span>
+    <span onclick="goTo('tech')">기술</span>
+    <span onclick="goTo('cta')">투자문의</span>
+  </div>
+  <div class="nav-hamburger" onclick="toggleMenu()" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="nav-mobile" id="mobileMenu">
+  <span onclick="goTo('problem');closeMenu()">문제</span>
+  <span onclick="goTo('solution');closeMenu()">솔루션</span>
+  <span onclick="goTo('ecosystem');closeMenu()">생태계</span>
+  <span onclick="goTo('roadmap');closeMenu()">로드맵</span>
+  <span onclick="goTo('revenue');closeMenu()">수익모델</span>
+  <span onclick="goTo('tech');closeMenu()">기술</span>
+  <span onclick="goTo('cta');closeMenu()">투자문의</span>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="container">
+    <div class="badge">🎤 AI 엔터테인먼트 플랫폼</div>
+    <h1 class="hero-title">나도 가수다</h1>
+    <p class="hero-sub">AI가 당신의 목소리를 학습하고, 원하는 노래를 당신의 목소리로 만들어드립니다.<br>누구나 가수가 되는 새로운 엔터테인먼트 생태계.</p>
+    <div class="stats">
+      <div>
+        <div class="stat-num">$6.2B</div>
+        <div class="stat-label">글로벌 AI 음악 시장 (2030)</div>
+      </div>
+      <div>
+        <div class="stat-num">4억+</div>
+        <div class="stat-label">K-POP 글로벌 팬덤</div>
+      </div>
+      <div>
+        <div class="stat-num">MVP</div>
+        <div class="stat-label">파이프라인 구현 완료</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="container">
+    <div class="sec-badge">Problem</div>
+    <h2 class="sec-title">노래는 하고 싶지만<br>나는 가수가 아니다</h2>
+    <div class="divider"></div>
+    <p class="sec-sub">음악을 사랑하는 수억 명이 가수의 꿈을 포기한 채 살고 있습니다.</p>
+    <div class="prob-list">
+      <div class="prob-item">
+        <div class="prob-num">01</div>
+        <div class="prob-text">
+          <h4>재능의 장벽 — "나는 노래를 못해"</h4>
+          <p>음치, 박치라는 이유로 음악 창작에서 완전히 배제됩니다. 노래는 선택받은 소수만의 영역으로 인식됩니다.</p>
+        </div>
+      </div>
+      <div class="prob-item">
+        <div class="prob-num">02</div>
+        <div class="prob-text">
+          <h4>비용의 장벽 — "스튜디오는 너무 비싸"</h4>
+          <p>전문 녹음 스튜디오, 작곡가, 편곡가 비용은 일반인이 접근하기 어렵습니다. 나만의 노래 한 곡을 만드는데 수백만 원이 필요합니다.</p>
+        </div>
+      </div>
+      <div class="prob-item">
+        <div class="prob-num">03</div>
+        <div class="prob-text">
+          <h4>콘텐츠의 장벽 — "내 목소리로 된 노래가 없다"</h4>
+          <p>AI 음악 생성 서비스가 많아졌지만, 정작 '내 목소리'로 된 노래를 만드는 서비스는 없습니다. 모든 AI 생성 노래는 낯선 AI 목소리입니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section id="solution">
+  <div class="container">
+    <div class="sec-badge">Solution</div>
+    <h2 class="sec-title">노래방처럼 부르면<br>AI가 나를 가수로 만든다</h2>
+    <div class="divider"></div>
+    <p class="sec-sub">단 한 곡을 노래방처럼 부르는 것만으로, AI가 당신의 목소리를 학습하고 원하는 노래를 당신의 목소리로 완성합니다.</p>
+
+    <div style="font-size:12px;font-weight:700;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin:36px 0 16px;">핵심 파이프라인</div>
+    <div class="pipeline">
+      <div class="p-step"><div class="p-icon">🎤</div><div class="p-title">노래방 녹음</div><div class="p-desc">MR에 맞춰 노래 → 보이스 데이터 수집</div></div>
+      <div class="p-arrow">→</div>
+      <div class="p-step"><div class="p-icon">🤖</div><div class="p-title">AI 학습</div><div class="p-desc">Applio RVC v2로 개인 음색 모델 학습</div></div>
+      <div class="p-arrow">→</div>
+      <div class="p-step"><div class="p-icon">🎵</div><div class="p-title">AI 작곡</div><div class="p-desc">가사+분위기 → Udio API 원곡 생성</div></div>
+      <div class="p-arrow">→</div>
+      <div class="p-step"><div class="p-icon">🎙️</div><div class="p-title">보이스 변환</div><div class="p-desc">AI 보컬을 내 목소리로 교체</div></div>
+      <div class="p-arrow">→</div>
+      <div class="p-step hl"><div class="p-icon">✨</div><div class="p-title">내 노래 완성</div><div class="p-desc">내 목소리로 부른 나만의 노래</div></div>
+    </div>
+
+    <div class="g3" style="margin-top:36px;">
+      <div class="card">
+        <div class="card-icon">🎭</div>
+        <div class="card-title">노래방 UX의 마법</div>
+        <div class="card-desc">"AI 학습을 위해 녹음하세요"가 아니라 "노래방처럼 불러보세요". 사용자는 즐기면서 자연스럽게 양질의 보이스 데이터를 제공합니다.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">학습 완료 즉시 알림</div>
+        <div class="card-desc">AI 학습이 완료되면 이메일과 푸시 알림으로 즉시 안내. 사용자는 기다리는 동안 기대감이 쌓입니다.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌟</div>
+        <div class="card-title">나만의 완성된 노래</div>
+        <div class="card-desc">원하는 가사와 분위기를 입력하면 내 목소리로 된 완전히 새로운 노래가 탄생합니다. 다운로드, 공유 가능.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ECOSYSTEM -->
+<section id="ecosystem">
+  <div class="container">
+    <div class="sec-badge">Ecosystem</div>
+    <h2 class="sec-title">노래 한 곡을 넘어<br>새로운 엔터테인먼트 생태계</h2>
+    <div class="divider"></div>
+    <p class="sec-sub">내 목소리로 만든 노래는 시작일 뿐입니다. 진짜 가수처럼 모든 것을 경험할 수 있는 생태계를 구축합니다.</p>
+
+    <div class="eco-grid">
+      <div class="eco-card hl"><div class="eco-icon">🎤</div><div class="eco-title">AI 보이스 클로닝</div><div class="eco-desc">내 목소리로 원하는 노래 생성 — 핵심 코어</div></div>
+      <div class="eco-card"><div class="eco-icon">🎬</div><div class="eco-title">뮤직비디오 생성</div><div class="eco-desc">AI로 나만의 뮤직비디오 자동 제작</div></div>
+      <div class="eco-card"><div class="eco-icon">💿</div><div class="eco-title">앨범 커버 디자인</div><div class="eco-desc">CD, LP 표지 AI 디자인 — 나만의 앨범 아트</div></div>
+      <div class="eco-card"><div class="eco-icon">👕</div><div class="eco-title">MD 굿즈 제작</div><div class="eco-desc">티셔츠, 응원봉, 포토카드 등 커스텀 MD 주문 제작</div></div>
+      <div class="eco-card"><div class="eco-icon">🎭</div><div class="eco-title">듀엣 &amp; 그룹</div><div class="eco-desc">다른 사용자와 듀엣, 걸그룹/보이그룹 결성 가능</div></div>
+      <div class="eco-card"><div class="eco-icon">🌐</div><div class="eco-title">아티스트 커뮤니티</div><div class="eco-desc">팬 커뮤니티, 이벤트, 챌린지, 차트</div></div>
+      <div class="eco-card"><div class="eco-icon">🏆</div><div class="eco-title">버추얼 콘서트</div><div class="eco-desc">버추얼 콘서트, 오디션, 커버 챌린지 특별 이벤트</div></div>
+      <div class="eco-card"><div class="eco-icon">📱</div><div class="eco-title">숏폼 콘텐츠</div><div class="eco-desc">틱톡/릴스 형식의 AI 뮤직 클립 자동 생성 및 공유</div></div>
+      <div class="eco-card"><div class="eco-icon">🎙️</div><div class="eco-title">팬 서비스</div><div class="eco-desc">내 목소리로 된 축하 메시지, 응원가 커스텀 제작</div></div>
+    </div>
+
+    <div class="vision-quote">
+      K-POP이 세상을 바꿨듯,<br>
+      <em>이제는 누구나 그 주인공이 됩니다.</em><br>
+      나도 가수다는 엔터테인먼트의 민주화입니다.
+    </div>
+  </div>
+</section>
+
+<!-- MARKET -->
+<section id="market">
+  <div class="container">
+    <div class="sec-badge">Market</div>
+    <h2 class="sec-title">거대한 시장이<br>기다리고 있습니다</h2>
+    <div class="divider"></div>
+    <div class="mkt-grid">
+      <div class="mkt-card">
+        <div class="mkt-size">$6.2B</div>
+        <div class="mkt-label">글로벌 AI 음악 시장</div>
+        <div class="mkt-desc">2030년 예상 규모<br>연평균 28% 성장</div>
+      </div>
+      <div class="mkt-card">
+        <div class="mkt-size">4억+</div>
+        <div class="mkt-label">K-POP 글로벌 팬덤</div>
+        <div class="mkt-desc">가수가 되고 싶은<br>핵심 타겟 시장</div>
+      </div>
+      <div class="mkt-card">
+        <div class="mkt-size">$180B</div>
+        <div class="mkt-label">글로벌 음반/MD 시장</div>
+        <div class="mkt-desc">커스텀 굿즈 시장<br>연평균 12% 성장</div>
+      </div>
+    </div>
+
+    <div style="margin-top:28px;padding:28px;background:var(--card);border:1px solid var(--border);border-radius:20px;">
+      <div style="font-size:13px;font-weight:700;color:var(--gold);margin-bottom:18px;">🎯 핵심 타겟 사용자</div>
+      <div class="g3">
+        <div>
+          <div style="font-size:14px;font-weight:700;margin-bottom:6px;">노래방 애호가</div>
+          <div style="font-size:13px;color:var(--text2);">한국 노래방 이용자 연 2억 명. 내 목소리로 된 노래를 갖고 싶은 욕구.</div>
+        </div>
+        <div>
+          <div style="font-size:14px;font-weight:700;margin-bottom:6px;">K-POP 팬</div>
+          <div style="font-size:13px;color:var(--text2);">좋아하는 아이돌 노래를 내 목소리로. 팬덤 문화와 AI의 결합.</div>
+        </div>
+        <div>
+          <div style="font-size:14px;font-weight:700;margin-bottom:6px;">콘텐츠 크리에이터</div>
+          <div style="font-size:13px;color:var(--text2);">유튜브, 틱톡 크리에이터의 오리지널 BGM 및 콘텐츠 차별화.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="container">
+    <div class="sec-badge">Roadmap</div>
+    <h2 class="sec-title">단계적 생태계 확장</h2>
+    <div class="divider"></div>
+    <div class="roadmap">
+      <div class="rm-item">
+        <div class="rm-dot"></div>
+        <div>
+          <div class="rm-phase">Phase 1 — 2026 Q1~Q2 · 현재</div>
+          <div class="rm-title">AI 보이스 클로닝 MVP</div>
+          <div class="rm-tags">
+            <span class="tag done">✅ 노래방 UX 녹음</span>
+            <span class="tag done">✅ Applio RVC 학습 파이프라인</span>
+            <span class="tag done">✅ Udio AI 작곡 연동</span>
+            <span class="tag done">✅ demucs 보컬 분리</span>
+            <span class="tag done">✅ 학습완료 알림 (이메일/푸시)</span>
+            <span class="tag done">✅ 멀티유저 지원</span>
+          </div>
+        </div>
+      </div>
+      <div class="rm-item">
+        <div class="rm-dot f"></div>
+        <div>
+          <div class="rm-phase">Phase 2 — 2026 Q3</div>
+          <div class="rm-title">품질 고도화 + 콘텐츠 확장</div>
+          <div class="rm-tags">
+            <span class="tag">클라우드 GPU 학습 (품질 대폭 향상, 20분 완료)</span>
+            <span class="tag">뮤직비디오 AI 자동 생성</span>
+            <span class="tag">앨범 커버 AI 디자인</span>
+            <span class="tag">숏폼 클립 자동 생성</span>
+            <span class="tag">iOS/Android 앱 출시</span>
+          </div>
+        </div>
+      </div>
+      <div class="rm-item">
+        <div class="rm-dot f"></div>
+        <div>
+          <div class="rm-phase">Phase 3 — 2026 Q4</div>
+          <div class="rm-title">MD 커머스 + 커뮤니티</div>
+          <div class="rm-tags">
+            <span class="tag">티셔츠/응원봉/포토카드 MD 주문 제작</span>
+            <span class="tag">CD/LP 표지 디자인 및 실물 제작</span>
+            <span class="tag">아티스트 프로필 &amp; 팬 커뮤니티</span>
+            <span class="tag">차트 &amp; 랭킹 시스템</span>
+          </div>
+        </div>
+      </div>
+      <div class="rm-item">
+        <div class="rm-dot f"></div>
+        <div>
+          <div class="rm-phase">Phase 4 — 2027</div>
+          <div class="rm-title">그룹 &amp; 버추얼 엔터테인먼트</div>
+          <div class="rm-tags">
+            <span class="tag">듀엣 &amp; 그룹(걸그룹/보이그룹) 결성</span>
+            <span class="tag">버추얼 콘서트 &amp; 라이브 이벤트</span>
+            <span class="tag">AI 아바타 연동</span>
+            <span class="tag">글로벌 K-POP 팬덤 확장</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVENUE -->
+<section id="revenue">
+  <div class="container">
+    <div class="sec-badge">Revenue Model</div>
+    <h2 class="sec-title">다층적 수익 구조</h2>
+    <div class="divider"></div>
+    <div class="rev-grid">
+      <div class="rev-card pri">
+        <div class="rev-phase">Core Revenue</div>
+        <div class="rev-title">구독 서비스</div>
+        <div class="rev-items">
+          <div class="rev-item">Free — 월 1곡, 기본 품질</div>
+          <div class="rev-item">Basic <span class="price">₩9,900/월</span> — 월 5곡, HD 품질</div>
+          <div class="rev-item">Pro <span class="price">₩19,900/월</span> — 무제한, 우선 학습</div>
+          <div class="rev-item">Artist <span class="price">₩49,900/월</span> — 그룹 기능 + MD 할인</div>
+        </div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-phase">Content Revenue</div>
+        <div class="rev-title">단건 과금</div>
+        <div class="rev-items">
+          <div class="rev-item">노래 추가 생성 <span class="price">₩2,900/곡</span></div>
+          <div class="rev-item">뮤직비디오 생성 <span class="price">₩9,900/편</span></div>
+          <div class="rev-item">앨범 커버 디자인 <span class="price">₩4,900/장</span></div>
+          <div class="rev-item">고품질 AI 재학습 <span class="price">₩14,900/회</span></div>
+        </div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-phase">MD Commerce</div>
+        <div class="rev-title">굿즈 커머스</div>
+        <div class="rev-items">
+          <div class="rev-item">커스텀 티셔츠 제작/판매</div>
+          <div class="rev-item">응원봉, 포토카드, 스티커</div>
+          <div class="rev-item">실물 CD/LP 제작</div>
+          <div class="rev-item">플랫폼 수수료 20%</div>
+        </div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-phase">Platform Revenue</div>
+        <div class="rev-title">플랫폼 수익</div>
+        <div class="rev-items">
+          <div class="rev-item">아티스트 후원 (팬→아티스트)</div>
+          <div class="rev-item">버추얼 콘서트 티켓</div>
+          <div class="rev-item">그룹 결성 프리미엄</div>
+          <div class="rev-item">B2B API 라이선스</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH -->
+<section id="tech">
+  <div class="container">
+    <div class="sec-badge">Technology</div>
+    <h2 class="sec-title">기술 스택 (MVP 구현 완료)</h2>
+    <div class="divider"></div>
+    <div class="tech-wrap">
+      <table class="tech-table">
+        <thead>
+          <tr><th>구성요소</th><th>기술</th><th>상태</th><th>설명</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>AI 보이스 클로닝</td><td>Applio (RVC v2)</td><td><span class="tbadge">완료</span></td><td>오픈소스 보컬 변환, 개인 음색 학습</td></tr>
+          <tr><td>AI 음악 생성</td><td>udioapi.pro</td><td><span class="tbadge">완료</span></td><td>가사+분위기 기반 원곡 생성</td></tr>
+          <tr><td>보컬 분리</td><td>demucs (htdemucs)</td><td><span class="tbadge">완료</span></td><td>AI 생성 노래에서 보컬/MR 분리</td></tr>
+          <tr><td>오디오 믹싱</td><td>ffmpeg</td><td><span class="tbadge">완료</span></td><td>MR + 변환된 보이스 고품질 믹싱</td></tr>
+          <tr><td>백엔드</td><td>Python FastAPI</td><td><span class="tbadge">완료</span></td><td>비동기 파이프라인, 실시간 상태 폴링</td></tr>
+          <tr><td>프론트엔드</td><td>HTML/CSS/JS</td><td><span class="tbadge">완료</span></td><td>노래방 UX, 가사 싱크, 실시간 파형</td></tr>
+          <tr><td>클라우드 GPU 학습</td><td>RunPod / AWS</td><td><span class="tbadge wip">개발예정</span></td><td>A100 GPU로 학습 20분 단축, 품질 대폭 향상</td></tr>
+          <tr><td>뮤직비디오</td><td>Sora / Runway ML</td><td><span class="tbadge wip">개발예정</span></td><td>AI 영상 생성 연동</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- WHY NOW -->
+<section id="why">
+  <div class="container">
+    <div class="sec-badge">Why Now</div>
+    <h2 class="sec-title">지금이 바로<br>그 타이밍입니다</h2>
+    <div class="divider"></div>
+    <div class="g3">
+      <div class="card">
+        <div class="card-icon">🚀</div>
+        <div class="card-title">AI 기술의 성숙</div>
+        <div class="card-desc">RVC, Udio, demucs 등 오픈소스 AI 음악 기술이 성숙 단계 진입. 1년 전엔 불가능했던 파이프라인이 지금은 동작합니다.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌍</div>
+        <div class="card-title">K-POP 글로벌 전성기</div>
+        <div class="card-desc">BTS, 블랙핑크로 촉발된 K-POP 열풍이 전 세계 4억 팬을 만들었습니다. 이들 모두가 잠재 사용자입니다.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📱</div>
+        <div class="card-title">크리에이터 이코노미</div>
+        <div class="card-desc">틱톡, 유튜브 쇼츠로 누구나 콘텐츠 크리에이터가 된 시대. 오리지널 음악 콘텐츠 수요가 폭발적으로 증가 중입니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="container" style="text-align:center;">
+    <div class="sec-badge">Investment</div>
+    <h2 class="sec-title">함께 만들어갈<br>엔터테인먼트의 미래</h2>
+    <p style="font-size:17px;color:var(--text2);margin-bottom:36px;line-height:1.7;">MVP 파이프라인 구현 완료.<br>지금 투자로 새로운 엔터테인먼트 생태계의 초기 파트너가 되세요.</p>
+
+    <div class="cta-box">
+      <div style="font-size:12px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;">투자 문의</div>
+      <div style="font-size:20px;font-weight:700;color:var(--gold);">나도 가수다 팀</div>
+      <div style="font-size:14px;color:var(--text2);">MVP 데모 시연 가능 · 기술 상세 문의 환영</div>
+    </div>
+
+    <div style="margin-top:32px;">
+      <div style="font-size:12px;color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:14px;">🎤 지금 바로 체험해보세요</div>
+      <a class="demo-btn" href="https://wrongly-unstormed-brandie.ngrok-free.dev" target="_blank" rel="noopener noreferrer">
+        나도 가수다 MVP 데모 →
+      </a>
+      <div style="font-size:12px;color:var(--text3);margin-top:10px;">실제 작동하는 서비스를 직접 체험하실 수 있습니다</div>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 나도 가수다 · AI Entertainment Platform · Confidential</footer>
+
+<script>
+function goTo(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const navH = document.querySelector('nav').offsetHeight;
+  const top = el.getBoundingClientRect().top + window.scrollY - navH - 8;
+  window.scrollTo({ top: top, behavior: 'smooth' });
+}
+function toggleMenu() {
+  const menu = document.getElementById('mobileMenu');
+  menu.classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+// 외부 클릭 시 메뉴 닫기
+document.addEventListener('click', function(e) {
+  const menu = document.getElementById('mobileMenu');
+  const hamburger = document.getElementById('hamburger');
+  if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+    closeMenu();
+  }
+});
+</script>
+
+</body>
+</html>
